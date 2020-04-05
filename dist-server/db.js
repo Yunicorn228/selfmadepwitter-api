@@ -11,7 +11,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 require('dotenv').config();
 
-var connectionString = process.env.DB_CONNECTION_STRING;
+var connectionString = 'mongodb+srv://admin:freebeach@cluster0-b4koz.mongodb.net/switter';
 var isConnected;
 
 var connectToDatabase = () => {

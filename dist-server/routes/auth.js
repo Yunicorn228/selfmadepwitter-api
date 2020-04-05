@@ -26,5 +26,45 @@ router.get('/', /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }());
+router.post('/register', /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator(function* (req, res, next) {
+    try {
+      var data = yield _auth.default.register(req);
+      res.json({
+        data,
+        success: true
+      });
+    } catch (error) {
+      res.json({
+        error,
+        success: false
+      });
+    }
+  });
+
+  return function (_x3, _x4, _x5) {
+    return _ref2.apply(this, arguments);
+  };
+}());
+router.post('/login', /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator(function* (req, res) {
+    try {
+      var data = yield _auth.default.handleLogin(req.body);
+      res.json({
+        success: true,
+        data
+      });
+    } catch (error) {
+      res.json({
+        error,
+        success: false
+      });
+    }
+  });
+
+  return function (_x6, _x7) {
+    return _ref3.apply(this, arguments);
+  };
+}());
 var _default = router;
 exports.default = _default;

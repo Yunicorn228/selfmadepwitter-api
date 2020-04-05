@@ -8,6 +8,7 @@ import usersRouter from './routes/users';
 import postsRouter from './routes/posts';
 import authRouter from './routes/auth';
 import connectToDatabase from './db';
+import guard from './helpers/jwt';
 
 const app = express();
 
@@ -18,8 +19,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/', indexRouter);
+app.use('/auth', authRouter);
+// guard ask for token
+app.use(guard);
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
-app.use('/auth', authRouter);
 
 export default app;

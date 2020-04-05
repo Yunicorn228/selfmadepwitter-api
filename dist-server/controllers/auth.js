@@ -24,7 +24,43 @@ var jwtSecret = process.env.JWT_SECRET;
 var verifyToken = token => _jsonwebtoken.default.verify(token, jwtSecret);
 
 var handleLogin = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator(function* (data) {});
+  var _ref = _asyncToGenerator(function* (data) {
+    var {
+      phone,
+      password
+    } = data;
+
+    if (phone && password) {
+      try {
+        var user = yield _User.default.findOne({
+          phone
+        });
+
+        if (user) {
+          var passwordMatch = _bcryptjs.default.compareSync(password, user.password);
+
+          if (passwordMatch) {
+            var token = _jsonwebtoken.default.sign({
+              userId: user._id
+            }, jwtSecret);
+
+            return {
+              token,
+              userId: user._id
+            };
+          }
+
+          throw 'password does not match';
+        }
+
+        throw 'user does not found';
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      throw 'no phone or password';
+    }
+  });
 
   return function handleLogin(_x) {
     return _ref.apply(this, arguments);
@@ -32,7 +68,44 @@ var handleLogin = /*#__PURE__*/function () {
 }();
 
 var register = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator(function* (data) {});
+  var _ref2 = _asyncToGenerator(function* (req) {
+    var {
+      firstName,
+      lastName,
+      email,
+      phone,
+      gender,
+      password
+    } = req.body;
+    var existEmail = yield _User.default.findOne({
+      email
+    });
+    var existPhone = yield _User.default.findOne({
+      phone
+    });
+    if (existEmail && existPhone) throw 'email or phone has been taken';
+
+    if (firstName && lastName && email && phone && gender && password) {
+      try {
+        var newUser = {
+          firstName,
+          lastName,
+          email,
+          phone,
+          gender
+        };
+
+        var encryptedPassword = _bcryptjs.default.hashSync(password, 10);
+
+        newUser.password = encryptedPassword;
+        return _User.default.create(newUser);
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      throw 'missing information mofo';
+    }
+  });
 
   return function register(_x2) {
     return _ref2.apply(this, arguments);

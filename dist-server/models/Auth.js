@@ -10,14 +10,15 @@ var _mongoose = _interopRequireDefault(require("mongoose"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var PostSchema = new _mongoose.default.Schema({
-  text: String,
-  likes: [String],
-  report: [String],
-  authorId: String,
-  comment: [Object]
+  firstName: String,
+  lastName: String,
+  email: String,
+  phone: Number,
+  gender: String,
+  password: String
 });
 
-var Posts = _mongoose.default.model('Posts', PostSchema);
+var Auth = _mongoose.default.model('Auth', AuthSchema);
 
-var _default = Posts;
+var _default = Auth;
 exports.default = _default;

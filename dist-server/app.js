@@ -23,6 +23,8 @@ var _auth = _interopRequireDefault(require("./routes/auth"));
 
 var _db = _interopRequireDefault(require("./db"));
 
+var _jwt = _interopRequireDefault(require("./helpers/jwt"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // app.js
@@ -34,10 +36,11 @@ app.use(_express.default.urlencoded({
   extended: false
 }));
 app.use((0, _cookieParser.default)());
-app.use(_express.default.static(_path.default.join(__dirname, '../public')));
 app.use('/', _index.default);
+app.use('/auth', _auth.default); // guard ask for token
+
+app.use(_jwt.default);
 app.use('/users', _users.default);
 app.use('/posts', _posts.default);
-app.use('/auth', _auth.default);
 var _default = app;
 exports.default = _default;
